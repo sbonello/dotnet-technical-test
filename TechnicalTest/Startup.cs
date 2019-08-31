@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 
 namespace TechnicalTest
 {
+    using Audit;
     using BusinessLogic;
     using Repository;
 
@@ -29,7 +30,7 @@ namespace TechnicalTest
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddSingleton<IRepository, InMemoryRepository>();
+            services.AddSingleton<IRepository, MongoRepository>();
             services.AddSingleton<ICustomersManager, CustomersManager>();
             services.AddSingleton<IAccountsManager, AccountsManager>();
 
@@ -40,6 +41,15 @@ namespace TechnicalTest
                 options.Database
                     = Configuration.GetSection("MongoConnection:Database").Value;
             });
+
+            services.Configure<EventStoreSettings>(options =>
+            {
+                options.IPAddress
+                    = Configuration.GetSection("EventStoreConnection:IPAddress").Value;
+                options.Port
+                    = Configuration.GetValue<int>("EventStoreConnection:Port");
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
