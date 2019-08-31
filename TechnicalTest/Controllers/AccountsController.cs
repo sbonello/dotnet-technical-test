@@ -41,7 +41,7 @@ namespace TechnicalTest.Controllers
         [HttpPost]
         [Route("api/accounts/{account}/deposit")]
         [ProducesResponseType(200)]
-        public void DepositeToAccount(Int32 account, AccountTransfer transferDetails)
+        public void DepositeToAccount(Int32 account, [FromBody] AccountTransfer transferDetails)
         {
             AccountsManager.Deposit(account, transferDetails.Funds);
         }
@@ -51,7 +51,7 @@ namespace TechnicalTest.Controllers
         [Route("api/accounts/{account}/withdraw")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult WithdrawAccount(Int32 account, AccountTransfer transferDetails)
+        public IActionResult WithdrawAccount(Int32 account, [FromBody] AccountTransfer transferDetails)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace TechnicalTest.Controllers
         [Route("api/accounts/transfer")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult Transfer(AccountTransfer transferDetails)
+        public IActionResult Transfer([FromBody] AccountTransfer transferDetails)
         {
             try
             {

@@ -15,6 +15,7 @@ namespace TechnicalTest
     using Audit;
     using BusinessLogic;
     using Repository;
+    using Swashbuckle.AspNetCore.Swagger;
 
     public class Startup
     {
@@ -29,7 +30,9 @@ namespace TechnicalTest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddSwaggerGen( c => {
+                c.SwaggerDoc("v1", new Info { Title = "Technical Test", Description = "Technical Test" });
+            });
             services.AddSingleton<IRepository, MongoRepository>();
             services.AddSingleton<ICustomersManager, CustomersManager>();
             services.AddSingleton<IAccountsManager, AccountsManager>();
@@ -61,6 +64,11 @@ namespace TechnicalTest
             }
 
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "Technical test");
+            });
         }
     }
 }
