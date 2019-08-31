@@ -36,6 +36,7 @@ namespace TechnicalTest
             services.AddSingleton<IRepository, MongoRepository>();
             services.AddSingleton<ICustomersManager, CustomersManager>();
             services.AddSingleton<IAccountsManager, AccountsManager>();
+            services.AddSingleton<ITransactionAudit, TransactionAudit>();
 
             services.Configure<MongoSettings>(options =>
             {

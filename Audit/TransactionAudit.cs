@@ -21,7 +21,7 @@ namespace Audit
         #endregion
 
         #region Constructor
-        public void AccountTransaction(IOptions<EventStoreSettings> settings)
+        public TransactionAudit(IOptions<EventStoreSettings> settings)
         {
             var consettings = ConnectionSettings.Create();
             conn = EventStoreConnection.Create(consettings, new IPEndPoint(IPAddress.Parse(settings.Value.IPAddress), 

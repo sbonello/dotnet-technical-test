@@ -71,6 +71,9 @@ namespace TechnicalTest.Controllers
         [ProducesResponseType(404)]
         public IActionResult Transfer([FromBody] AccountTransfer transferDetails)
         {
+            if (transferDetails.To == transferDetails.From)
+                return BadRequest("Transfer is to the same account");
+
             try
             {
                 AccountsManager.TransferAmount(transferDetails.From,
