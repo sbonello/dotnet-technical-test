@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Exceptions;
+﻿using Audit;
+using BusinessLogic.Exceptions;
 using Repository;
 using System;
 using System.Collections.Concurrent;
@@ -15,6 +16,7 @@ namespace BusinessLogic
         /// The repository
         /// </summary>
         private readonly IRepository Repository;
+        private readonly ITransactionAudit TransactionAudit;
 
         private static ConcurrentDictionary<Int32, object> LockObjects = new ConcurrentDictionary<Int32, object>();
 
@@ -25,10 +27,12 @@ namespace BusinessLogic
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountsManager"/> class.
         /// </summary>
-        /// <param name="repository">The repository.</param>
-        public AccountsManager(IRepository repository)
+        /// <param name="repository">The data repository.</param>
+        /// <param name="transactionAudit">Transaction audit</param>
+        public AccountsManager(IRepository repository, ITransactionAudit transactionAudit)
         {
             this.Repository = repository;
+            this.TransactionAudit = transactionAudit;
         }
 
         #endregion
@@ -46,6 +50,7 @@ namespace BusinessLogic
                 try
                 {
                     this.Repository.DepositFunds(customerid, funds);
+                    this.TransactionAudit.AccountTransaction(customerid, funds, TransactionType.Credit);
                 }
                 finally
                 {
@@ -72,6 +77,9 @@ namespace BusinessLogic
                         throw new NotEnoughFundsException();
 
                     this.Repository.WithdrawFunds(customerid, funds);
+                    this.TransactionAudit.AccountTransaction(customerid, 
+                                                             funds, 
+                                                             TransactionType.Debit);
                 }
                 finally
                 {
