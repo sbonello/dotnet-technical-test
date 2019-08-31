@@ -33,6 +33,13 @@ namespace TechnicalTest
             services.AddSingleton<ICustomersManager, CustomersManager>();
             services.AddSingleton<IAccountsManager, AccountsManager>();
 
+            services.Configure<MongoSettings>(options =>
+            {
+                options.ConnectionString
+                    = Configuration.GetSection("MongoConnection:ConnectionString").Value;
+                options.Database
+                    = Configuration.GetSection("MongoConnection:Database").Value;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
