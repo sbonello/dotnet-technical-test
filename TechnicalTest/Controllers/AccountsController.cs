@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogic;
+using BusinessLogic.Exceptions;
 using DataTransferObjects;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,7 @@ namespace TechnicalTest.Controllers
         // GET api/customers/5
         [HttpPost]
         [Route("api/accounts/{account}/deposit")]
+        [ProducesResponseType(200)]
         public void DepositeToAccount(Int32 account, AccountTransfer transferDetails)
         {
             AccountsManager.Deposit(account, transferDetails.Funds);
@@ -47,18 +49,40 @@ namespace TechnicalTest.Controllers
         // GET api/customers/5
         [HttpPost]
         [Route("api/accounts/{account}/withdraw")]
-        public void WithdrawAccount(Int32 account, AccountTransfer transferDetails)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult WithdrawAccount(Int32 account, AccountTransfer transferDetails)
         {
-            AccountsManager.Withdraw(account, transferDetails.Funds);
+            try
+            {
+                AccountsManager.Withdraw(account, transferDetails.Funds);
+            }
+            catch (NotEnoughFundsException)
+            {
+                return BadRequest("Not enough funds to perform the transfer");
+            }
+
+            return Ok();
         }
 
         [HttpPost]
         [Route("api/accounts/transfer")]
-        public void Transfer(AccountTransfer transferDetails)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public IActionResult Transfer(AccountTransfer transferDetails)
         {
-            AccountsManager.TransferAmount(transferDetails.From,
-                                           transferDetails.To,
-                                           transferDetails.Funds);
+            try
+            {
+                AccountsManager.TransferAmount(transferDetails.From,
+                                               transferDetails.To,
+                                               transferDetails.Funds);
+            }
+            catch (NotEnoughFundsException)
+            {
+                return BadRequest("Not enough funds to perform the transfer");
+            }
+
+            return Ok();
         }
 
         #endregion

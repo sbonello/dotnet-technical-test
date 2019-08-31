@@ -1,4 +1,5 @@
-﻿using Repository;
+﻿using BusinessLogic.Exceptions;
+using Repository;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -65,6 +66,11 @@ namespace BusinessLogic
             {
                 try
                 {
+                    Decimal availableFunds = this.Repository.GetAvailableFunds(customerid);
+
+                    if (availableFunds - funds < 0)
+                        throw new NotEnoughFundsException();
+
                     this.Repository.WithdrawFunds(customerid, funds);
                 }
                 finally
@@ -89,6 +95,11 @@ namespace BusinessLogic
             {
                 try
                 {
+                    Decimal availableFunds = this.Repository.GetAvailableFunds(fromCustomerId);
+
+                    if (availableFunds - funds < 0)
+                        throw new NotEnoughFundsException();
+
                     this.Repository.WithdrawFunds(fromCustomerId, funds);
                     this.Repository.DepositFunds(toCustomerId, funds);
                 }
