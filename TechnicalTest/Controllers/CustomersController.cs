@@ -45,7 +45,7 @@
         [HttpGet]
         public ActionResult<IEnumerable<Customer>> Get()
         {
-            return null;
+            return this.Ok(this.CustomersManager.ListCustomers());
         }
 
         // GET api/customers/5

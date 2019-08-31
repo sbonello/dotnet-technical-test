@@ -1,6 +1,7 @@
 ﻿namespace BusinessLogic
 {
     using System;
+    using System.Collections.Generic;
     using DataTransferObjects;
     using Repository;
 
@@ -44,7 +45,6 @@
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
         public Customer GetCustomer(Int32 id)
         {
             return this.Repository.GetCustomer(id);
@@ -57,6 +57,14 @@
         public void SaveCustomer(Customer customer)
         {
             this.Repository.SaveCustomer(customer);
+        }
+        /// <summary>
+        /// List the customers.
+        /// </summary>
+        /// <returns></returns>
+        public List<Customer> ListCustomers()
+        {
+            return this.Repository.ListCustomers();
         }
 
         #endregion

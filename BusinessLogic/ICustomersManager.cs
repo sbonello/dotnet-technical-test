@@ -1,6 +1,8 @@
 ﻿namespace BusinessLogic
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using DataTransferObjects;
 
     public interface ICustomersManager
@@ -25,6 +27,11 @@
         /// </summary>
         /// <param name="customer">The customer.</param>
         void SaveCustomer(Customer customer);
+
+        /// <summary>
+        /// List all the customers.
+        /// </summary>
+        List<Customer> ListCustomers();
 
         #endregion
     }

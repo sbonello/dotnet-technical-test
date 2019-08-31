@@ -31,6 +31,7 @@ namespace TechnicalTest
 
             services.AddSingleton<IRepository, InMemoryRepository>();
             services.AddSingleton<ICustomersManager, CustomersManager>();
+            services.AddSingleton<IAccountsManager, AccountsManager>();
 
         }
 

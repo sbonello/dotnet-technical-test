@@ -82,6 +82,15 @@ namespace Repository
         }
 
         /// <summary>
+        /// List of customers
+        /// </summary>
+        /// <returns></returns>
+        public List<Customer> ListCustomers()
+        {
+            return this.Customers;
+        }
+
+        /// <summary>
         /// Saves the customer.
         /// </summary>
         /// <param name="customer">The customer.</param>
